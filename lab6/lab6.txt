@@ -1,0 +1,49 @@
+
+
+/*Exercise 1*/
+	
+    db.getCollection("Restaurants").find({})
+
+
+/*Exercise 2*/
+
+1. filter: db.getCollection("Restaurants").find({"cuisine": "Italian"})
+2. projection: db.getCollection("Restaurants").find({"cuisine": "Italian"},{"cuisine":1, "name":1})
+3. sort: db.getCollection("Restaurants").find({"cuisine": "Japanese"},{"cuisine":1, "name":1}).sort({'_id':-1})
+
+
+/*Exercise 2 Task 4*/
+
+db.getCollection("Restaurants").find(
+{"cuisine": {$eq: "Japanese"}},
+{"_id":1, "cuisine":1, "name":1,"city":1, "restaurant_id":1}).sort({'restaurant_id':-1})
+
+
+/*Exercise 3 Logical Operators*/
+
+db.getCollection("Restaurants").find(
+{$and: [ {"cuisine": {$eq: "Delicatessen"}}, {"city": {$ne: "Brooklyn"} }] },
+{"cuisine":1, "name":1, "city":1})
+.sort({name:1})
+
+
+/*Exercise 4 Multiple Operators*/
+
+db.getCollection("Restaurants").find(
+{$and: [ {"cuisine": {$in: ["Bakery", "Chicken", "Hamburgers", "American"]}}, 
+    {"city": {$ne: "Brooklyn"} }, {'restaurant_id': {$gt: '4000000'} }
+    ]},
+{"cuisine":1, "name":1, "city":1, "restaurant_id": 1})
+.sort({'restaurant_id':-1})
+
+
+
+/*Exercise 5*/
+
+db.getCollection("Restaurants").find({
+    $or: [
+        {'name': /.*Thai.*/i },
+        {'address.street': /.*Street.*/i },
+        {'address.zipcode': {$eq: '1'}}
+    ]
+})
